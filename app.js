@@ -4,7 +4,8 @@ const Hapi = require('hapi');
 require('env2')('./.env');
 const config = require('./config');
 const swagger = require('./plugins/hapi-swagger');
-const routers = require('./routes/index')
+const orderrouters = require('./routes/order')
+const shoprouters = require('./routes/shops')
 const server = new Hapi.Server();
 
 // 配置服务器启动 host 与端口
@@ -19,7 +20,13 @@ const init = async () => {
         ...swagger
     ]);
 
-    server.route(require('./routes/index'));
+    await server.route(
+        orderrouters
+    );
+    await server.route(
+        shoprouters
+    );
+
 
     // 启动服务
     await server.start();
